@@ -1,2 +1,2 @@
-# metamod-updater
+# mmsource-updater
 Metamod Source **Updater**
