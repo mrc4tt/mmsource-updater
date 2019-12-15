@@ -80,4 +80,4 @@ SNAPSHOT_DEV_SEARCHPATTER="https:.*mmsource-.*-linux.*gz"
 ```
 
 ## Credits
-[Thanks for loan of script! - BCServ!](https://github.com/bcserv/sourcemod-updater) @bcserv
+[Thanks for loan of script! - BCServ! (SourceMod)](https://github.com/bcserv/sourcemod-updater)
