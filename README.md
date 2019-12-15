@@ -1,15 +1,15 @@
-MetaMod Source Updater (**MMSource**)
+MetaMod Source Updater
 =================
 
 Updates or installs the latest MetamodSource stable release or snapshots.
 
-# Features
+## Features
 
 * Installs/updates stable releases or snapshots
 * Downloaded packages will be cached and not downloaded the next time
 * Can fix the permission afterwards (--fixpermissions)
 
-# Installation
+## Installation
 
 ```shell
 # Change to any directory where you want to install it first
@@ -23,7 +23,7 @@ chmod u+w packagecache
 ./update.sh
 ```
 
-# Usage
+## Usage
 
 ### Syntax
 ```shell
@@ -67,7 +67,7 @@ This is needed if the update is executed by root and the srcds doesn't run as ro
 ./update.sh /srcds/css/cstrike --dontask                  # Never ask for anything
 ```
 
-# Settings
+## Settings
 
 ```bash
 # The source code of this page will be searched for the latest sourcemod package
@@ -78,3 +78,6 @@ SNAPSHOT_STABLE_SEARCHPATTER="https:.*mmsource-.*-linux.*gz"
 SNAPSHOT_DEV_MIRROR="https://mms.alliedmods.net/mmsdrop/1.11/"
 SNAPSHOT_DEV_SEARCHPATTER="https:.*mmsource-.*-linux.*gz"
 ```
+
+## Credits
+[Thanks for loan of script! - BCServ!](https://github.com/bcserv/sourcemod-updater) @bcserv
