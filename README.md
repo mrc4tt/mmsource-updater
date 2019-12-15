@@ -13,8 +13,8 @@ Updates or installs the latest MetamodSource stable release or snapshots.
 
 ```shell
 # Change to any directory where you want to install it first
-aptitude install lynx wget findutils rsync
-wget https://github.com/MikkelDK/mmsource-updater/archive/master.zip -O sourcemod-updater.zip
+apt-get install lynx wget findutils rsync
+wget https://github.com/MikkelDK/mmsource-updater/archive/master.zip -O mmsource-updater.zip
 unzip mmsource-updater.zip
 mv mmsource-updater-master mmsource-updater
 cd mmsource-updater
@@ -68,7 +68,6 @@ This is needed if the update is executed by root and the srcds doesn't run as ro
 ```
 
 ## Settings
-
 ```bash
 # The source code of this page will be searched for the latest sourcemod package
 # We assume that the last one is the latest
