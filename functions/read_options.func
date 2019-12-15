@@ -1,0 +1,22 @@
+function read_options
+{
+	for argument in "$@"
+	do
+		# if it starts with --,
+		# then it's an option
+		if [[ $argument == --* ]]; then
+			option=${argument:2}
+
+			if [[ $option == *=* ]]; then
+				option_name=${option%=*}
+				option_value=${option#*=}
+
+				options["$option_name"]=$option_value;
+			else
+				options["$option"]=1;
+			fi
+		fi
+	done
+
+	export options
+}

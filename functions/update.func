@@ -1,0 +1,77 @@
+function update
+{
+	# Ceate a temporary directory
+	temp=$(mktemp -d)
+	tar xzf "packagecache/$filename" -C "$temp"
+
+	mmsource_dirname="metamod"
+
+	if [[ ${options[smdir]} ]]; then
+		mmsource_dirname="${options[smdir]}"
+	fi
+
+	if [[ ! -f "$directory_game/steam.inf" ]]; then
+		echo -e "${red}Error: ${cyan}steam.inf$red missing in '${yellow}$directory_game$red', are you sure this is the right directory?$reset"
+		return 0
+	fi
+
+	if [[ ${options[install]} != "1" && ! -d "$directory_game/addons/$mmsource_dirname" ]]; then
+		echo -e "${red}Error: directory '${yellow}addons/$mmsource_dirname$red' not found, ${cyan}try with --install$reset."
+		return 0
+	fi
+
+	# Validate mmsource package files
+	if [[ ! -d "$temp/addons/metamod" ]]; then
+		echo -e "${red}Error: mmsource package corrupt or not compatible, '${yellow}addons/metamod$red' doesn't exist."
+		return 0
+	fi
+
+	if [[ ${options[install]} == "1" ]]; then
+		echo -e "${cyan}Installing mmsource now...$reset"
+
+		# If an other mmsource directory name has been
+		# specified, rename it from the stock name.
+		if [[ $mmsource_dirname != "metamod" ]]; then
+			mv "$temp/addons/metamod" "$temp/addons/$mmsource_dirname"
+		fi
+
+		cp -R "$temp/"* "$directory_game"
+
+		echo -e "$green[SUCCESS] MMSource installed into '${yellow}$directory_game/addons/$mmsource_dirname$green'.$reset"
+	else
+		echo -e "${cyan}Updating MMSource now...$reset"
+
+		# Update MMSource
+
+		# bin          - rm, mv
+		# configs      - rm geoip, sql-init-scripts; mv
+		# data         - don't touch
+		# extensions   - overwrite
+		# gamedata     - rm core.games, sdktools.games, sm-*.txt; overwrite
+		# logs         - don't touch
+		# plugins      - replace & update in / and disabled/, new plugins -> disabled/
+		# scripting    - overwrite
+		# translations - overwrite
+
+		directory_source="$temp/addons/metamod"
+		directory_target="$directory_game/addons/$mmsource_dirname"
+		attributes="--checksum"
+
+		echo -e "${cyan}Updating bin/$reset"
+		rsync --recursive --delete-during $attributes --out-format="%o %n" "$directory_source/bin/" "$directory_target/bin/"
+
+		echo -e "$green[SUCCESS] Sourcemod updated.$reset"
+	fi
+
+	if [[ ${options[fixpermissions]} == "1" ]]; then
+		owner_group=`stat --format="%u:%g" "$directory_game"`
+		echo -en "${cyan}Fixing permissions using $owner_group from game directory...$reset"
+
+		chown -R $owner_group "$directory_game/addons/$mmsource_dirname"
+		chown -R $owner_group "$directory_game/addons/metamod.vdf"
+
+		echo -e "${cyan}done$reset"
+	fi
+
+	return 1
+}

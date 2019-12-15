@@ -1,0 +1,67 @@
+function download
+{
+	if [[ $url_mmsource_package == "" ]]; then
+		echo -e "You didn't specify an URL as argument to download mmsource from."
+		echo -e "I will try to get the latest mmsource release automatically..."
+		echo ""
+
+		if [[ ${options[snapshot-stable]} == "1" ]]; then
+			mmsource_mirror="$SNAPSHOT_STABLE_MIRROR"
+			search_pattern="$SNAPSHOT_STABLE_SEARCHPATTER"
+		else
+			if [[ ${options[snapshot-dev]} == "1" ]]; then
+				mmsource_mirror="$SNAPSHOT_DEV_MIRROR"
+				search_pattern="$SNAPSHOT_DEV_SEARCHPATTER"
+			else
+				mmsource_mirror="$SNAPSHOT_STABLE_MIRROR"
+				search_pattern="$SNAPSHOT_STABLE_SEARCHPATTER"
+			fi
+		fi
+
+		mmsource_latest_basename=`wget -qO- "$mmsource_mirror/mmsource-latest-linux"`
+		
+		if [[ ${#mmsource_latest_basename} -gt "0" ]]; then
+			url_mmsource_package="$mmsource_mirror$mmsource_latest_basename"
+		elif hash lynx 2>/dev/null; then
+			echo "Attempting to scrape the download mirror for the package using lynx..."
+			url_mmsource_package=`lynx -dump "$mmsource_mirror" | egrep -o "$search_pattern" | tail -1`
+		else
+			echo -e "${red}Error: Could not retrieve latest version of mmsource.  Please install lynx for scraping.$reset"
+		fi
+
+		if [[ $url_mmsource_package == "" ]]; then
+			echo -e "${red}Error: Scanning for the latest mmsource package failed.$reset"
+
+			if [[ ${options[dontask]} != "1" ]]; then
+				echo -e "${cyan}Please enter a direct URL for downloading mmsource:$reset"
+				read url_mmsource_package
+			fi
+
+			if [[ $url_mmsource_package == "" ]]; then
+				echo -e "${red}URL empty, aborting.$reset"
+				return 0
+			fi
+		fi
+	else
+		package_url="$1"
+	fi
+
+
+	filename=$(basename "$url_mmsource_package")
+
+	if [[ $filename != *.tar.gz ]]; then
+		echo -e "${red}Error: File doesn't end with '.tar.gz', aborting.$reset"
+		return 0
+	fi
+
+	echo -e "${green}Found mmsource package:$reset"
+	echo -e "${cyan}URL: $yellow$url_mmsource_package$reset"
+	echo -e "Trying to download file $yellow$filename$reset now.$reset"
+	echo ""
+
+	wget --directory-prefix="packagecache" --no-clobber --verbose "$url_mmsource_package"
+
+	echo -e "${green}File downloaded successfully :)$reset"
+
+	return 1
+}
