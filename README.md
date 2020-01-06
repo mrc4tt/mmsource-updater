@@ -16,10 +16,10 @@ Updates or installs the latest MetamodSource stable release or snapshots.
 apt-get install lynx wget findutils rsync
 wget https://github.com/MikkelDK/mmsource-updater/archive/master.zip -O mmsource-updater.zip
 unzip mmsource-updater.zip
+rm mmsource-updater.zip
 mv mmsource-updater-master mmsource-updater
 cd mmsource-updater
 chmod u+x update.sh
-chmod u+w packagecache
 ./update.sh
 ```
 
