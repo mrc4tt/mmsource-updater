@@ -13,11 +13,8 @@ Updates or installs the latest MetamodSource stable release or snapshots.
 
 ```shell
 # Change to any directory where you want to install it first
-apt-get install lynx wget findutils rsync
-wget https://github.com/MikkelDK/mmsource-updater/archive/master.zip -O mmsource-updater.zip
-unzip mmsource-updater.zip
-rm mmsource-updater.zip
-mv mmsource-updater-master mmsource-updater
+apt-get install lynx wget findutils rsync git
+git clone https://github.com/MikkelDK/mmsource-updater.git
 cd mmsource-updater
 chmod u+x update.sh
 ./update.sh
@@ -71,10 +68,10 @@ This is needed if the update is executed by root and the srcds doesn't run as ro
 ```bash
 # The source code of this page will be searched for the latest sourcemod package
 # We assume that the last one is the latest
-SNAPSHOT_STABLE_MIRROR="https://mms.alliedmods.net/mmsdrop/1.10/"
+SNAPSHOT_STABLE_MIRROR="https://mms.alliedmods.net/mmsdrop/1.11/"
 SNAPSHOT_STABLE_SEARCHPATTER="https:.*mmsource-.*-linux.*gz"
 
-SNAPSHOT_DEV_MIRROR="https://mms.alliedmods.net/mmsdrop/1.11/"
+SNAPSHOT_DEV_MIRROR="https://mms.alliedmods.net/mmsdrop/1.12/"
 SNAPSHOT_DEV_SEARCHPATTER="https:.*mmsource-.*-linux.*gz"
 ```
 
