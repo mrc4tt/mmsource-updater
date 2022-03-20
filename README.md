@@ -13,8 +13,8 @@ Updates or installs the latest MetamodSource stable release or snapshots.
 
 ```shell
 # Change to any directory where you want to install it first
-apt-get install lynx wget findutils rsync git
-git clone https://github.com/MikkelDK/mmsource-updater.git
+apt-get install lynx wget findutils rsync git -y
+git clone https://github.com/mrc4tt/mmsource-updater.git
 cd mmsource-updater
 chmod u+x update.sh
 ./update.sh
